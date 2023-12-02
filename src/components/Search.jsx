@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { IoSearchSharp } from "react-icons/io5";
 const Search = ({ handleSearch }) => {
   const [searchfield, setSearchField] = useState("");
 
@@ -25,7 +25,7 @@ const Search = ({ handleSearch }) => {
           onClick={() => handleSearch(searchfield)}
         >
           {" "}
-          Search
+          <IoSearchSharp color="white" size={28}/>
         </button>
       </div>
     </div>

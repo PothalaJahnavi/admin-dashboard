@@ -43,15 +43,21 @@ const Home = () => {
     } else setSelectedRecords((prev) => [...prev, key]);
   };
   const handleBulkDelete = () => {
-    const filteredData = data.filter(
-      (user) => !selectedRecords.includes(user.id)
-    );
-    setData(filteredData);
-    setSelectedRecords([]);
+    if (selectedRecords.length == 0)
+      alert("select atleast one record to delete");
+    else {
+      const filteredData = data.filter(
+        (user) => !selectedRecords.includes(user.id)
+      );
+      setData(filteredData);
+      setSelectedRecords([]);
+      alert("successfully deleted");
+    }
   };
   const handleDeleteOne = (key) => {
     const newData = data.filter((user) => user.id != key);
     setData(newData);
+    alert("Successfully deleted one record");
   };
   const handleSearch = (searchfield) => {
     const filteredData = data.filter((user) =>
@@ -89,7 +95,15 @@ const Home = () => {
             <Search handleSearch={handleSearch} />
           </div>
           <div onClick={handleBulkDelete} style={{ cursor: "pointer" }}>
-            <MdDelete color="red" size={40} />
+            <button
+              type="button"
+              class="btn btn-transparent"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Delete Items In Bulk"
+            >
+              <MdDelete color="red" size={40} />
+            </button>
           </div>
         </div>
         <div>

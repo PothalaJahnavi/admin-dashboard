@@ -62,7 +62,8 @@ const EmployeeData = ({
           {data.map((item, index) => {
             return (
               <>
-                <tr key={item.id}>
+            <tr key={item.id} 
+              className={selectedRecords.includes(item.id) ?"table-info":''} >
                   <td>
                     <div
                       className="form-check"
@@ -115,7 +116,7 @@ const EmployeeData = ({
                           className="form-control"
                           type="text"
                           name="role"
-                          value={editedData.email}
+                          value={editedData.role}
                           onChange={handleEdditedData}
                         />
                       </div>

@@ -9,6 +9,7 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentpage] = useState(1);
   const [selectedRecords, setSelectedRecords] = useState([]);
+  const [allSelect, setAllSelect] = useState(false);
   const recordsPerPage = 10;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
@@ -25,6 +26,12 @@ const Home = () => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    const allSelected = data
+      .slice(firstIndex, lastIndex)
+      .every((item) => selectedRecords.includes(item.id));
+    setAllSelect(allSelected);
+  }, [currentPage, data, selectedRecords, firstIndex, lastIndex]);
 
   const handleCurrentPageChange = (value) => {
     setCurrentpage(value);
@@ -47,7 +54,6 @@ const Home = () => {
     setData(newData);
   };
   const handleSearch = (searchfield) => {
-    console.log(searchfield);
     const filteredData = data.filter((user) =>
       Object.values(user).some((fieldValue) =>
         fieldValue.toLowerCase().includes(searchfield.toLowerCase())
@@ -55,15 +61,31 @@ const Home = () => {
     );
     setData(filteredData);
   };
+  const handleEditRow = (newData) => {
+    const updatedData = data.map((user) =>
+      user.id === newData.id ? newData : user
+    );
 
+    setData(updatedData);
+  };
+  const handleSelectAll = () => {
+    if (selectedRecords.length) setSelectedRecords([]);
+    else {
+      const allIds = records.map((user) => user.id);
+      setSelectedRecords(allIds);
+    }
+  };
   return (
     <div>
       <div>
-        <h1>Employee data</h1>
+        <h1 style={{ color: "navy" }}>Employee data</h1>
       </div>
       <div style={{ margin: "2%" }}>
-        <div className="d-flex flex-row justify-content-between">
-          <div style={{ width: "90%" }}>
+        <div
+          className="d-flex flex-row justify-content-between"
+          style={{ margin: "0 1%" }}
+        >
+          <div>
             <Search handleSearch={handleSearch} />
           </div>
           <div onClick={handleBulkDelete} style={{ cursor: "pointer" }}>
@@ -76,6 +98,10 @@ const Home = () => {
             handleDeleteOne={handleDeleteOne}
             handleSelectedRecords={handleSelectedRecords}
             selectedRecords={selectedRecords}
+            handleEditRow={handleEditRow}
+            handleSelectAll={handleSelectAll}
+            currentPage={currentPage}
+            allSelect={allSelect}
           />
         </div>
       </div>
